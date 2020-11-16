@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Marvel</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="character_fragment_label">Characters</string>
+    <string name="detail_fragment_label">Details</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="network_error">Check your network connection.</string>
+    <string name="retry">Retry</string>
+    <string name="description">No description.</string>
+
+</resources>
