@@ -9,6 +9,7 @@ import UIKit
 
 class DetailsViewController: UIViewController {
 
+    @IBOutlet weak var loadingIndicatior: UIActivityIndicatorView!
     @IBOutlet weak var image: UIImageView!
     @IBOutlet weak var name: UILabel!
     @IBOutlet weak var desc: UILabel!
@@ -17,6 +18,7 @@ class DetailsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         Cliente.getCharacterById(id: id) { (response, error) in
+            self.loadingIndicatior.isHidden = true
             if let error = error {
                 print(error.localizedDescription)
                 return

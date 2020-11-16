@@ -17,24 +17,26 @@ class Cliente {
     static let ts = "diegulog"
     
     enum Endpoints {
-   
+        
         case characterById(Int)
-        case characters
+        case characters(Int, Int)
         
         var stringValue: String {
             switch self {
-            case .characters: return Cliente.base + "characters"
-            case .characterById(let id): return "\(Cliente.base)/characters/\(id)"
+            case .characters(let limit, let offset): return Cliente.base + "characters?limit=\(limit)&offset=\(offset)"
+            case .characterById(let id): return "\(Cliente.base)characters/\(id)"
             }
         }
         
         var url: URL {
             var urlComponents = URLComponents(url: URL(string: stringValue)!, resolvingAgainstBaseURL: false)
             let hash = "\(ts)\(privateKey)\(publicKey)".md5
-            let queryItems = [URLQueryItem(name: "apikey", value: Cliente.publicKey),
+            var queryItems = [URLQueryItem(name: "apikey", value: Cliente.publicKey),
                               URLQueryItem(name: "ts", value: Cliente.ts),
                               URLQueryItem(name: "hash", value: hash)]
-        
+            if let tempQueryItems = urlComponents?.queryItems {
+                queryItems.append(contentsOf: tempQueryItems)
+            }
             urlComponents?.queryItems = queryItems
             urlComponents?.scheme = "https"
             
@@ -52,33 +54,37 @@ class Cliente {
         }
     }
     
-    class func getCharacteres(completion: @escaping ([Character], Error?) -> Void) {
-        taskForGETRequest(url: Endpoints.characters.url, responseType: MarvelResponse.self) { response, error in
+    class func getCharacteres(limit :Int, offset :Int, completion: @escaping (DataResponse?, Error?) -> Void) {
+        taskForGETRequest(url: Endpoints.characters(limit, offset).url, responseType: MarvelResponse.self) { response, error in
             if let response = response{
-                completion(response.data.results, nil)
+                completion(response.data, nil)
             }else{
-                completion([Character](), error)
+                completion(nil, error)
             }
         }
     }
     
-  
+    
     class func taskForGETRequest<ResponseType: Decodable>(url: URL, responseType: ResponseType.Type, completion: @escaping (ResponseType?, Error?) -> Void) {
         print(url)
         URLSession.shared.dataTask(with: url) { data, response, error in
             guard let data = data else {
                 DispatchQueue.main.async {
-                completion(nil, error)
+                    completion(nil, error)
                 }
                 return
             }
             let decoder = JSONDecoder()
-        
-                let responseObject = try! decoder.decode(ResponseType.self, from: data)
+            do{
+                let responseObject = try decoder.decode(ResponseType.self, from: data)
                 DispatchQueue.main.async {
                     completion(responseObject, nil)
                 }
-         
+            } catch {
+                DispatchQueue.main.async {
+                    completion(nil, error)
+                }
+            }
         }.resume()
     }
 }
