@@ -28,7 +28,8 @@ Se ha desarrollado utilizando las librerías de  Android Jetpack:
   * [LiveData][2] -Cree objetos de datos que notifiquen a las vistas cuando cambia la base de datos subyacente.
   * [Paging][3] - La biblioteca de paginación le ayuda a cargar y mostrar pequeños fragmentos de datos a la vez.
   * [Navigation][4] - Maneje todo lo necesario para la navegación dentro de la aplicación.
-  * [ViewModel][5] - Maneje todo lo necesario para la navegación dentro de la aplicación.
+  * [ViewModel][5] - Almacene datos relacionados con la interfaz de usuario que no se destruyen en las rotaciones de aplicaciones. Programe fácilmente
+      Tareas asincrónicas para una ejecución óptima.
   * [Fragment][6] - Una unidad básica de IU componible.
 
 * Bibliotecas de terceros y diversas
