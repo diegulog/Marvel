@@ -1,23 +1,20 @@
 package com.diegulog.marvel.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.diegulog.marvel.R
 import com.diegulog.marvel.data.CharacterResponse
+import com.diegulog.marvel.databinding.ListItemCharacterBinding
 import com.diegulog.marvel.utils.CHARACTERS_TYPE_ITEM
 import com.diegulog.marvel.utils.LOADING_TYPE_ITEM
+import com.diegulog.marvel.utils.loadGlide
 
 class CharactersAdapter(private val clickListener:(CharacterResponse) -> Unit) : PagingDataAdapter<CharacterResponse, CharactersAdapter.CharacterViewHolder>(DiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        return CharacterViewHolder.create(parent)
+        return CharacterViewHolder(ListItemCharacterBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun onBindViewHolder(holder: CharacterViewHolder, position: Int) {
@@ -37,27 +34,13 @@ class CharactersAdapter(private val clickListener:(CharacterResponse) -> Unit) :
         }
     }
 
-    class CharacterViewHolder(view: View): RecyclerView.ViewHolder(view) {
-        private val name: TextView = view.findViewById(R.id.name)
-        private val thumbnail: ImageView = view.findViewById(R.id.thumbnail)
+    class CharacterViewHolder(private val binding: ListItemCharacterBinding): RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: CharacterResponse) {
-
-            name.text = item.name
-            Glide.with(itemView.context)
-                .load(item.thumbnailUrl("standard_xlarge"))
-                .fitCenter()
-                .placeholder(R.drawable.ic_image)
-                .into(thumbnail)
+            binding.name.text = item.name
+            binding.thumbnail.loadGlide(item.thumbnailUrl("standard_xlarge"))
         }
 
-        companion object {
-            fun create( parent: ViewGroup): CharacterViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_character, parent, false)
-                return CharacterViewHolder(view)
-            }
-        }
     }
 }
 

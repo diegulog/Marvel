@@ -1,9 +1,9 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id 'dagger.hilt.android.plugin'
 
 }
 
@@ -26,6 +26,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    buildFeatures {
+        viewBinding = true
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -67,8 +71,16 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutines"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines"
 
+
     implementation "androidx.paging:paging-runtime-ktx:3.0.0-alpha09"
 
+    //DI
+    def hilt = "2.28.3-alpha"
+    implementation "com.google.dagger:hilt-android:$hilt"
+    kapt "com.google.dagger:hilt-android-compiler:$hilt"
+    def hilt_lifecycle = "1.0.0-alpha02"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_lifecycle"
+    kapt "androidx.hilt:hilt-compiler:$hilt_lifecycle"
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

@@ -1,20 +1,16 @@
 package com.diegulog.marvel.viewmodels
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.diegulog.marvel.api.MarvelService
 import com.diegulog.marvel.data.CharacterResponse
-import com.diegulog.marvel.data.CharactersRepository
+import com.diegulog.marvel.data.NetworkRepository
 import kotlinx.coroutines.flow.Flow
 
-class CharactersViewModel(application: Application) : AndroidViewModel(application) {
+class CharactersViewModel @ViewModelInject constructor(private val repository: NetworkRepository) : ViewModel() {
 
-    private val repository: CharactersRepository by lazy {
-        CharactersRepository(MarvelService.getInstance())
-    }
 
     var currentResult: Flow<PagingData<CharacterResponse>>
 

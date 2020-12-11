@@ -20,31 +20,24 @@ Aplicación Android/iOS utilizando api de marvel https://developer.marvel.com/
 
 Se ha desarrollado utilizando las librerías de  Android Jetpack:
 
- * [Android KTX][0] - Escribe código Kotlin más conciso e idiomático.
-* [Architecture][1] - Una colección de bibliotecas que lo ayudan a diseñar robustas, probables y
-   aplicaciones mantenibles. Comience con clases para administrar el ciclo de vida de los componentes de la interfaz de usuario y manejar datos
-   persistencia.
+* [LiveData][1] -Cree objetos de datos que notifiquen a las vistas cuando cambia la base de datos subyacente.
+* [Paging][2] - La biblioteca de paginación le ayuda a cargar y mostrar pequeños fragmentos de datos a la vez.
+* [Navigation][3] - Maneje todo lo necesario para la navegación dentro de la aplicación.
+* [ViewModel][4] - Almacene datos relacionados con la interfaz de usuario que no se destruyen en las rotaciones de aplicaciones. Programe fácilmente tareas asincrónicas para una ejecución óptima.
+* [Hilt][5] - Inyección de dependencias
 
-  * [LiveData][2] -Cree objetos de datos que notifiquen a las vistas cuando cambia la base de datos subyacente.
-  * [Paging][3] - La biblioteca de paginación le ayuda a cargar y mostrar pequeños fragmentos de datos a la vez.
-  * [Navigation][4] - Maneje todo lo necesario para la navegación dentro de la aplicación.
-  * [ViewModel][5] - Almacene datos relacionados con la interfaz de usuario que no se destruyen en las rotaciones de aplicaciones. Programe fácilmente
-      Tareas asincrónicas para una ejecución óptima.
-  * [Fragment][6] - Una unidad básica de IU componible.
 
 * Bibliotecas de terceros y diversas
-  * [Glide][7] para cargar imágenes
-  * [Kotlin Coroutines][8] para administrar subprocesos en segundo plano con código simplificado y reducir la necesidad de devoluciones de llamada
+  * [Glide][6] para cargar imágenes
+  * [Kotlin Coroutines][7] para administrar subprocesos en segundo plano con código simplificado y reducir la necesidad de devoluciones de llamada
 
-[0]: https://developer.android.com/kotlin/ktx
-[1]: https://developer.android.com/jetpack/arch/
+[1]: https://developer.android.com/topic/libraries/architecture/livedata
 [2]: https://developer.android.com/topic/libraries/architecture/paging
-[3]: https://developer.android.com/topic/libraries/architecture/livedata
-[4]: https://developer.android.com/topic/libraries/architecture/navigation/
-[5]: https://developer.android.com/topic/libraries/architecture/viewmodel
-[6]: https://developer.android.com/guide/components/fragments
-[7]: https://bumptech.github.io/glide/
-[8]: https://kotlinlang.org/docs/reference/coroutines-overview.html
+[3]: https://developer.android.com/topic/libraries/architecture/navigation/
+[4]: https://developer.android.com/topic/libraries/architecture/viewmodel
+[5]: https://developer.android.com/training/dependency-injection/hilt-android
+[6]: https://bumptech.github.io/glide/
+[7]: https://kotlinlang.org/docs/reference/coroutines-overview.html
 
 
 ## Requirements

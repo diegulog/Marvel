@@ -1,48 +1,39 @@
 package com.diegulog.marvel.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.paging.LoadState
 import androidx.paging.LoadStateAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.diegulog.marvel.R
+import com.diegulog.marvel.databinding.NetworkStateItemBinding
 import com.diegulog.marvel.utils.toVisibility
-import kotlinx.android.synthetic.main.network_state_item.view.*
 
 class CharacterLoadStateAdapter(private val retry: () -> Unit) :
     LoadStateAdapter<CharacterLoadStateAdapter.CharacterLoadStateViewHolder>() {
 
     override fun onBindViewHolder(holder: CharacterLoadStateViewHolder, loadState: LoadState) {
-        val progress = holder.itemView.progress_bar
-        val btnRetry = holder.itemView.retry_button
-        val txtErrorMessage = holder.itemView.error_msg
-
-        if (loadState is LoadState.Error) {
-            txtErrorMessage.text = loadState.error.localizedMessage
-        }
-
-        btnRetry.toVisibility(loadState !is LoadState.Loading)
-        txtErrorMessage.toVisibility(loadState !is LoadState.Loading)
-        progress.toVisibility(loadState is LoadState.Loading)
-
-        btnRetry.setOnClickListener {
-            retry.invoke()
-        }
+        holder.bind(loadState, retry)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, loadState: LoadState): CharacterLoadStateViewHolder {
-        return CharacterLoadStateViewHolder.create(parent)
+        return CharacterLoadStateViewHolder(NetworkStateItemBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false))
     }
 
-    class CharacterLoadStateViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class CharacterLoadStateViewHolder(val binding: NetworkStateItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
-        companion object {
-            fun create(parent: ViewGroup): CharacterLoadStateViewHolder {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.network_state_item, parent, false)
-                return CharacterLoadStateViewHolder(view)
-            }
-        }
+       fun bind(loadState: LoadState, retry: () -> Unit){
+           if (loadState is LoadState.Error) {
+               binding.errorMsg.text = loadState.error.localizedMessage
+           }
+           binding.retryButton.toVisibility(loadState !is LoadState.Loading)
+           binding.errorMsg.toVisibility(loadState !is LoadState.Loading)
+           binding.progressBar.toVisibility(loadState is LoadState.Loading)
+           binding.retryButton.setOnClickListener {
+               retry.invoke()
+           }
+       }
     }
 }

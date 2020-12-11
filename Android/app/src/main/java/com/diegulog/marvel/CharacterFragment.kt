@@ -1,10 +1,10 @@
 package com.diegulog.marvel
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -12,17 +12,18 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.GridLayoutManager
 import com.diegulog.marvel.adapters.CharacterLoadStateAdapter
 import com.diegulog.marvel.adapters.CharactersAdapter
+import com.diegulog.marvel.databinding.FragmentCharacterBinding
 import com.diegulog.marvel.utils.LOADING_TYPE_ITEM
 import com.diegulog.marvel.utils.toVisibility
 import com.diegulog.marvel.viewmodels.CharactersViewModel
-import kotlinx.android.synthetic.main.fragment_character.*
-import kotlinx.android.synthetic.main.network_state_item.*
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
+@AndroidEntryPoint
 class CharacterFragment : Fragment() {
 
+    private lateinit var binding: FragmentCharacterBinding
     private val viewModel: CharactersViewModel by viewModels()
     private lateinit var charactersAdapter: CharactersAdapter
 
@@ -30,8 +31,9 @@ class CharacterFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_character, container, false)
+    ): View {
+        binding = FragmentCharacterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,11 +60,11 @@ class CharacterFragment : Fragment() {
                 }
             }
         }
-        retry_button.setOnClickListener{
+        binding.networkStateItem.retryButton.setOnClickListener{
             charactersAdapter.retry()
         }
 
-        recycler_view.apply {
+        binding.recyclerView.apply {
             layoutManager = gridLayoutManager
             setHasFixedSize(true)
             adapter = charactersAdapter.withLoadStateFooter(
@@ -82,9 +84,9 @@ class CharacterFragment : Fragment() {
     private fun setupLoadingState() {
         lifecycleScope.launch {
             charactersAdapter.loadStateFlow.collectLatest { loadStates ->
-                progress_bar.toVisibility(loadStates.refresh is LoadState.Loading)
-                retry_button.toVisibility(loadStates.refresh is LoadState.Error)
-                error_msg.toVisibility(loadStates.refresh is LoadState.Error)
+                binding.networkStateItem.progressBar.toVisibility(loadStates.refresh is LoadState.Loading)
+                binding.networkStateItem.retryButton.toVisibility(loadStates.refresh is LoadState.Error)
+                binding.networkStateItem.errorMsg.toVisibility(loadStates.refresh is LoadState.Error)
             }
         }
     }
